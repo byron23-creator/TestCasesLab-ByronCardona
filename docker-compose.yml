@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Servicio principal de MongoDB
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb-todoapp
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    # environment:
+      # Opcional: Descomentar para agregar autenticación
+      # MONGO_INITDB_ROOT_USERNAME: admin
+      # MONGO_INITDB_ROOT_PASSWORD: password123
+      # MONGO_INITDB_DATABASE: todo_app
+    networks:
+      - todoapp-network
+
+  # Opcional: MongoDB Express para interfaz web
+  mongo-express:
+    image: mongo-express:1.0.0
+    container_name: mongo-express-todoapp
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin123
+      # Si usas autenticación en MongoDB, descomenta:
+      # ME_CONFIG_MONGODB_AUTH_USERNAME: admin
+      # ME_CONFIG_MONGODB_AUTH_PASSWORD: password123
+      # ME_CONFIG_MONGODB_AUTH_DATABASE: admin
+    depends_on:
+      - mongodb
+    networks:
+      - todoapp-network
+
+# Volúmenes para persistir datos
+volumes:
+  mongodb_data:
+    driver: local
+
+# Red para comunicación entre contenedores
+networks:
+  todoapp-network:
+    driver: bridge
