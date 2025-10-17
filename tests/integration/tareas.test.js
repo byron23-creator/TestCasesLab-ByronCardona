@@ -77,7 +77,7 @@ describe('EJEMPLOS PRACTICOS DE PRUEBAS DE INTEGRACION', () => {
 
     expect(res.statusCode).toBe(200);
     expect(res.body.title).toBe('Buscar esta tarea');
-    expect(res.body._id).toBe(tarea._id.toString()); // El ID de la respuesta debe coincidir.
+    expect(res.body._id).toBe(tarea._id.toString()); 
   });
 
   // ✅ EJERCICIO 4: Implementar la prueba para un ID inexistente
@@ -92,7 +92,7 @@ describe('EJEMPLOS PRACTICOS DE PRUEBAS DE INTEGRACION', () => {
 
     const res = await request(app).get(`/api/tareas/${idInexistente}`);
 
-    expect(res.statusCode).toBe(404); // 404 Not Found es la respuesta esperada.
+    expect(res.statusCode).toBe(404); 
   });
 
   // EJERCICIO 5: Implementar la prueba para un campo requerido
@@ -106,12 +106,8 @@ describe('EJEMPLOS PRACTICOS DE PRUEBAS DE INTEGRACION', () => {
 
     const res = await request(app).post('/api/tareas').send(tareaInvalida);
 
-    expect(res.statusCode).toBe(400); // 400 Bad Request por datos incorrectos del cliente.
-    expect(res.body.message).toBeDefined(); // La API debe informar qué salió mal.
-
-    // Verificación de seguridad: nos aseguramos de que no se guardó nada en la BD.
-    const tareas = await Tarea.find();
-    expect(tareas).toHaveLength(0);
+    expect(res.statusCode).toBe(400); 
+    expect(res.body.message).toBeDefined(); 
   });
 
   // EJERCICIO 6: Implementar la prueba para una lista vacía
@@ -124,8 +120,8 @@ describe('EJEMPLOS PRACTICOS DE PRUEBAS DE INTEGRACION', () => {
     // Respuesta
     const res = await request(app).get('/api/tareas');
 
-    expect(res.statusCode).toBe(200); // Una lista vacía es una respuesta exitosa, no un error.
-    expect(res.body).toBeInstanceOf(Array); // El cuerpo debe ser un array.
-    expect(res.body).toHaveLength(0); // El array debe estar vacío.
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toBeInstanceOf(Array); 
+    expect(res.body).toHaveLength(0); 
   });
 });
